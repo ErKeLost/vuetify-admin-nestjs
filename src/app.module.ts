@@ -3,6 +3,7 @@ import { UserModule } from './user/user.module';
 import { ConfigModule } from '@nestjs/config';
 // import * as dotenv from 'dotenv';
 import configuration from './configuration';
+import * as joi from 'joi';
 // env 模式
 // const envFilePath = `.env.${process.env.NODE_ENV || 'development'}`;
 @Module({
@@ -14,6 +15,9 @@ import configuration from './configuration';
       // envFilePath,
       // load: [() => dotenv.config({ path: 'env' })],
       load: [() => configuration],
+      validationSchema: joi.object({
+        DB_PORT: joi.number().default(3306),
+      }),
     }),
     UserModule,
   ],

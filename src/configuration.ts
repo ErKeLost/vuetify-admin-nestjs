@@ -1,5 +1,5 @@
 import { readFileSync } from 'fs';
-import * as yaml from 'js-yaml'; 
+import * as yaml from 'js-yaml';
 import { join } from 'path';
 import _ from 'lodash';
 
