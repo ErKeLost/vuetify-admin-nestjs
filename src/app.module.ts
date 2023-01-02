@@ -17,6 +17,9 @@ import * as joi from 'joi';
       load: [() => configuration],
       validationSchema: joi.object({
         DB_PORT: joi.number().default(3306),
+        DB_URL: joi.string().domain(),
+        DB_HOST: joi.string().ip(),
+        NODE_ENV: joi.string().valid('development', 'production'),
       }),
     }),
     UserModule,
