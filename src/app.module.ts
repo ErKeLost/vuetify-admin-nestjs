@@ -5,7 +5,7 @@ import { ConfigModule } from '@nestjs/config';
 import configuration from './configuration';
 import * as joi from 'joi';
 // env 模式
-// const envFilePath = `.env.${process.env.NODE_ENV || 'development'}`;
+const envFilePath = `.env.${process.env.NODE_ENV || 'development'}`;
 @Module({
   // forRoot 读取 .env 文件
   imports: [
