@@ -1,5 +1,10 @@
 export enum ConfigEnum {
+  DB = 'DB',
   DB_PORT = 'DB_PORT',
   DB_URL = 'DB_URL',
   DB_HOST = 'DB_HOST',
+  DB_USERNAME = 'DB_USERNAME',
+  DB_PASSWORD = 'DB_PASSWORD',
+  DB_DATABASE = 'DB_DATABASE',
+  DB_SYNCHRONIZE = 'DB_SYNCHRONIZE',
 }
