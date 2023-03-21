@@ -1,13 +1,14 @@
 import { ConfigEnum } from './enum/config.enum';
 import { Module } from '@nestjs/common';
 import { UserModule } from './user/user.module';
-import { ConfigModule, ConfigService } from '@nestjs/config';
+import { ConfigModule } from '@nestjs/config';
 import * as dotenv from 'dotenv';
 import { TypeOrmModule, TypeOrmModuleOptions } from '@nestjs/typeorm';
 import configuration from './configuration';
 import * as joi from 'joi';
 // env 模式
-const envFilePath = `.env.${process.env.NODE_ENV || 'development'}`;
+// const envFilePath = `.env.${process.env.NODE_ENV || 'development'}`;
+// console.log(configuration);
 
 @Module({
   // forRoot 读取 .env 文件
@@ -16,8 +17,8 @@ const envFilePath = `.env.${process.env.NODE_ENV || 'development'}`;
       // 全局模块都能使用 不然只有app模块可以使用
       isGlobal: true,
       // envFilePath,
-      load: [() => dotenv.config({ path: 'env' })],
-      // load: [() => configuration],
+      // load: [() => dotenv.config({ path: 'env' })],
+      load: [() => configuration],
       // 设置环境变量配置验证 joi 传递环境变量的格式校验
       // 环境变量使用枚举的方式来进行填充
       validationSchema: joi.object({
@@ -43,24 +44,24 @@ const envFilePath = `.env.${process.env.NODE_ENV || 'development'}`;
     //   synchronize: true,
     //   logging: ['error', 'warn', 'info', 'log'],
     // }),
-    // 不能写死 要读取环境变量 可以动态导入
-    TypeOrmModule.forRootAsync({
-      imports: [ConfigModule],
-      inject: [ConfigService],
-      useFactory: (configService: ConfigService) =>
-        ({
-          type: configService.get(ConfigEnum.DB),
-          host: configService.get(ConfigEnum.DB_HOST),
-          port: configService.get(ConfigEnum.DB_PORT),
-          username: configService.get(ConfigEnum.DB_USERNAME),
-          password: configService.get(ConfigEnum.DB_PASSWORD),
-          database: configService.get(ConfigEnum.DB_DATABASE),
-          entities: [],
-          // 同步本地schema与数据库 -> 每次初始化的时候同步
-          synchronize: configService.get(ConfigEnum.DB_SYNCHRONIZE),
-          logging: ['error', 'warn', 'info', 'log'],
-        } as TypeOrmModuleOptions),
-    }),
+    // 不能写死 要读取环境变量
+    // TypeOrmModule.forRootAsync({
+    //   imports: [ConfigModule],
+    //   inject: [ConfigService],
+    //   useFactory: (configService: ConfigService) =>
+    //     ({
+    //       type: configService.get(ConfigEnum.DB),
+    //       host: configService.get(ConfigEnum.DB_HOST),
+    //       port: configService.get(ConfigEnum.DB_PORT),
+    //       username: configService.get(ConfigEnum.DB_USERNAME),
+    //       password: configService.get(ConfigEnum.DB_PASSWORD),
+    //       database: configService.get(ConfigEnum.DB_DATABASE),
+    //       entities: [],
+    //       // 同步本地schema与数据库 -> 每次初始化的时候同步
+    //       synchronize: configService.get(ConfigEnum.DB_SYNCHRONIZE),
+    //       logging: ['error', 'warn', 'info', 'log'],
+    //     } as TypeOrmModuleOptions),
+    // }),
     UserModule,
   ],
   controllers: [],
