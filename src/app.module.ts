@@ -8,7 +8,7 @@ import { UserModule } from './user/user.module';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import * as dotenv from 'dotenv';
 import { TypeOrmModule, TypeOrmModuleOptions } from '@nestjs/typeorm';
-import configuration from './configuration';
+// import configuration from './configuration';
 import * as joi from 'joi';
 // env 模式
 // const envFilePath = `.env.${process.env.NODE_ENV || 'development'}`;
@@ -53,8 +53,8 @@ import * as joi from 'joi';
     TypeOrmModule.forRootAsync({
       imports: [ConfigModule],
       inject: [ConfigService],
-      useFactory: (configService: ConfigService) =>
-        ({
+      useFactory: (configService: ConfigService) => {
+        const typeOrmConfig: TypeOrmModuleOptions = {
           type: configService.get(ConfigEnum.DB),
           host: configService.get(ConfigEnum.DB_HOST),
           port: configService.get(ConfigEnum.DB_PORT),
@@ -64,8 +64,10 @@ import * as joi from 'joi';
           entities: [User, Logs, Profile, Roles],
           // 同步本地schema与数据库 -> 每次初始化的时候同步
           synchronize: configService.get(ConfigEnum.DB_SYNCHRONIZE),
-          logging: ['error', 'warn', 'info', 'log'],
-        } as TypeOrmModuleOptions),
+          logging: ['error'],
+        } as TypeOrmModuleOptions;
+        return typeOrmConfig;
+      },
     }),
     UserModule,
   ],
