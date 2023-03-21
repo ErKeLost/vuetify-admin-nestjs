@@ -28,7 +28,7 @@ import * as joi from 'joi';
       // 环境变量使用枚举的方式来进行填充
       validationSchema: joi.object({
         DB_PORT: joi.number().default(3306),
-        DB_HOST: joi.string().ip(),
+        // DB_HOST: joi.string().ip(),
         NODE_ENV: joi.string().valid('development', 'production'),
         DB: joi.string().valid('mysql', 'postgres'),
         DB_DATABASE: joi.string().required(),
