@@ -1,3 +1,7 @@
+import { Roles } from './roles/entities/roles.entity';
+import { Profile } from './user/entities/profile.entity';
+import { Logs } from './logs/entities/logs.entity';
+import { User } from './user/entities/user.entity';
 import { ConfigEnum } from './enum/config.enum';
 import { Module } from '@nestjs/common';
 import { UserModule } from './user/user.module';
@@ -57,7 +61,7 @@ import * as joi from 'joi';
           username: configService.get(ConfigEnum.DB_USERNAME),
           password: configService.get(ConfigEnum.DB_PASSWORD),
           database: configService.get(ConfigEnum.DB_DATABASE),
-          entities: [],
+          entities: [User, Logs, Profile, Roles],
           // 同步本地schema与数据库 -> 每次初始化的时候同步
           synchronize: configService.get(ConfigEnum.DB_SYNCHRONIZE),
           logging: ['error', 'warn', 'info', 'log'],
