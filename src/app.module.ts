@@ -19,17 +19,18 @@ import * as joi from 'joi';
       // envFilePath,
       // load: [() => dotenv.config({ path: 'env' })],
       load: [() => configuration],
+      ignoreEnvFile: true,
       // 设置环境变量配置验证 joi 传递环境变量的格式校验
       // 环境变量使用枚举的方式来进行填充
       validationSchema: joi.object({
-        DB_PORT: joi.number().default(3306),
-        DB_HOST: joi.string().ip(),
-        NODE_ENV: joi.string().valid('development', 'production'),
-        DB: joi.string().valid('mysql', 'postgres'),
-        DB_DATABASE: joi.string().required(),
-        DB_USERNAME: joi.string().required(),
-        DB_PASSWORD: joi.string().required(),
-        DB_SYNCHRONIZE: joi.boolean().default(false),
+        // DB_PORT: joi.number().default(3306),
+        // DB_HOST: joi.string().ip(),
+        // NODE_ENV: joi.string().valid('development', 'production'),
+        // DB: joi.string().valid('mysql', 'postgres'),
+        // DB_DATABASE: joi.string().required(),
+        // DB_USERNAME: joi.string().required(),
+        // DB_PASSWORD: joi.string().required(),
+        // DB_SYNCHRONIZE: joi.boolean().default(false),
       }),
     }),
     // TypeOrmModule.forRoot({
