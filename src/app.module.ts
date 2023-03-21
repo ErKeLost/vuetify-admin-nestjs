@@ -17,9 +17,9 @@ import * as joi from 'joi';
       // 全局模块都能使用 不然只有app模块可以使用
       isGlobal: true,
       // envFilePath,
-      // load: [() => dotenv.config({ path: 'env' })],
+      load: [() => dotenv.config({ path: 'env' })],
       // load: [() => configuration],
-      load: [configuration],
+      // load: [configuration],
       // 设置环境变量配置验证 joi 传递环境变量的格式校验
       // 环境变量使用枚举的方式来进行填充
       validationSchema: joi.object({
@@ -49,21 +49,19 @@ import * as joi from 'joi';
     TypeOrmModule.forRootAsync({
       imports: [ConfigModule],
       inject: [ConfigService],
-      useFactory: (configService: ConfigService) => {
-        const DB = configService.get(ConfigEnum.DB_NAME);
-        return {
-          type: DB[ConfigEnum.DB],
-          host: DB(ConfigEnum.DB_HOST),
-          port: DB(ConfigEnum.DB_PORT),
-          username: DB(ConfigEnum.DB_USERNAME),
-          password: DB(ConfigEnum.DB_PASSWORD),
-          database: DB(ConfigEnum.DB_DATABASE),
+      useFactory: (configService: ConfigService) =>
+        ({
+          type: configService.get(ConfigEnum.DB),
+          host: configService.get(ConfigEnum.DB_HOST),
+          port: configService.get(ConfigEnum.DB_PORT),
+          username: configService.get(ConfigEnum.DB_USERNAME),
+          password: configService.get(ConfigEnum.DB_PASSWORD),
+          database: configService.get(ConfigEnum.DB_DATABASE),
           entities: [],
           // 同步本地schema与数据库 -> 每次初始化的时候同步
-          synchronize: DB(ConfigEnum.DB_SYNCHRONIZE),
+          synchronize: configService.get(ConfigEnum.DB_SYNCHRONIZE),
           logging: ['error', 'warn', 'info', 'log'],
-        } as TypeOrmModuleOptions;
-      },
+        } as TypeOrmModuleOptions),
     }),
     UserModule,
   ],
