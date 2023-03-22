@@ -65,17 +65,19 @@ export class UserService {
      * 
      */
   async findLogsByGroup(id: number) {
-    return (
-      this.logsRepository
-        .createQueryBuilder('logs')
-        .select('logs.result', 'result')
-        .addSelect('COUNT("logs.result")', 'count')
-        .leftJoinAndSelect('logs.user', 'user')
-        .where('user.id = :id', { id })
-        .groupBy('logs.result')
-        // .orderBy('count', 'DESC')
-        .orderBy('result', 'DESC')
-        .getRawMany()
-    );
+    // return (
+    //   this.logsRepository
+    //     .createQueryBuilder('logs')
+    //     .select('logs.result', 'result')
+    //     .addSelect('COUNT("logs.result")', 'count')
+    //     .leftJoinAndSelect('logs.user', 'user')
+    //     .where('user.id = :id', { id })
+    //     .groupBy('logs.result')
+    //     // .orderBy('count', 'DESC')
+    //     .orderBy('result', 'DESC')
+    //     .getRawMany()
+    // );
+
+    return this.logsRepository.query('SELECT * FROM logs');
   }
 }
