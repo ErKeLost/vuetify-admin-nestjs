@@ -108,3 +108,27 @@ Ioc是一种设计模式 DI 是 IoC 的具体实现
 
 
 ![image.png](https://p3-juejin.byteimg.com/tos-cn-i-k3u1fbpfcp/f979347948e44ad7962c63c992cb2879~tplv-k3u1fbpfcp-watermark.image?)
+
+
+
+## QueryBuilder 
+
+QueryBuilder 是 typeorm 最强大的功能之一 他可以让你在不写sql语句的情况下 通过链式调用的方式来构建sql语句
+
+允许你优雅便捷的语法构建 sql 查询， 执行并获得自动转换的实体
+
+QueryBuilder 的简单示例
+
+```ts
+const firstUser = await connection
+  .getRepository(User)
+  .createQueryBuilder("user")
+  .where("user.id = :id", { id: 1 })
+  .getOne();
+```
+
+```sql
+SELECT "user"."id" AS "user_id", "user"."name" AS "user_name" FROM "user" "user" WHERE user.id = 1
+```
+
+```
