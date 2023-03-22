@@ -64,8 +64,8 @@ import * as joi from 'joi';
           entities: [User, Logs, Profile, Roles],
           // 同步本地schema与数据库 -> 每次初始化的时候同步
           synchronize: configService.get(ConfigEnum.DB_SYNCHRONIZE),
-          // logging: ['error'],
-          logging: true,
+          logging: ['error'],
+          // logging: true,
         } as TypeOrmModuleOptions;
         return typeOrmConfig;
       },

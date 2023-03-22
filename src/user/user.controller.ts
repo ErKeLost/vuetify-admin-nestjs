@@ -36,6 +36,15 @@ export class UserController {
     return this.userService.findUserLogs(2);
   }
 
+  @Get('/logsByGroup')
+  async getLogsByGroup(): Promise<any> {
+    const res = await this.userService.findLogsByGroup(2);
+    return res.map((o) => ({
+      result: o.result,
+      count: o.count,
+    }));
+  }
+
   @Get('/find')
   findAll(): any {
     return this.userService.findAll();
@@ -54,15 +63,5 @@ export class UserController {
   @Delete(':id')
   remove(@Param('id') id: number) {
     return this.userService.remove(id);
-  }
-
-  @Get('/logsByGroup')
-  async getLogsByGroup(): Promise<any> {
-    const res = await this.userService.findLogsByGroup(2);
-
-    return res.map((o) => ({
-      result: o.result,
-      count: o.count,
-    }));
   }
 }
