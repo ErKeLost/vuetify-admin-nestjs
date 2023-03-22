@@ -55,4 +55,14 @@ export class UserController {
   remove(@Param('id') id: number) {
     return this.userService.remove(id);
   }
+
+  @Get('/logsByGroup')
+  async getLogsByGroup(): Promise<any> {
+    const res = await this.userService.findLogsByGroup(2);
+
+    return res.map((o) => ({
+      result: o.result,
+      count: o.count,
+    }));
+  }
 }

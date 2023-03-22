@@ -56,4 +56,24 @@ export class UserService {
       },
     });
   }
+
+  // 日志分组
+  async findLogsByGroup(id: number) {
+    /**
+     * 
+     *     SELECT logs.result, COUNT(logs.result) AS count FROM logs, user WHERE logs.userId = user.id
+    AND user.id = 2 GROUP BY logs.result;
+     * 
+     */
+    const res = this.logsRepository
+      .createQueryBuilder('logs')
+      .select('logs.result', 'result')
+      .addSelect('COUNT("logs.result")', 'count')
+      .leftJoinAndSelect('logs.user', 'user')
+      .where('user.id = :id', { id })
+      .groupBy('logs.result')
+      .orderBy('count', 'DESC')
+      .getRawMany();
+    return res;
+  }
 }
