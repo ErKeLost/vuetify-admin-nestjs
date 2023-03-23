@@ -16,12 +16,12 @@ export class HttpExceptionFilter implements ExceptionFilter {
     const request = ctx.getRequest<Request>();
     const status = exception.getStatus();
     this.logger.error(exception.message, exception.stack);
-    response.status(status).json({
-      code: status,
-      timestamp: new Date().toISOString(),
-      path: request.url,
-      method: request.method,
-      message: exception.message || HttpException.name,
-    });
+    // response.status(status).json({
+    //   code: status,
+    //   timestamp: new Date().toISOString(),
+    //   path: request.url,
+    //   method: request.method,
+    //   message: exception.message || HttpException.name,
+    // });
   }
 }
