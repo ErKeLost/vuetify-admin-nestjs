@@ -11,36 +11,59 @@ import { TypeOrmModule, TypeOrmModuleOptions } from '@nestjs/typeorm';
 // import configuration from './configuration';
 import * as joi from 'joi';
 import { LoggerModule } from 'nestjs-pino';
-import path from 'path';
+import { join } from 'path';
 
 // env 模式
 // const envFilePath = `.env.${process.env.NODE_ENV || 'development'}`;
 // console.log(configuration);
-
+const logger = {
+  // pinoHttp: {
+  //   transport:
+  //     process.env.NODE_ENV === 'development'
+  //       ? {
+  //           target: 'pino-pretty',
+  //           options: {
+  //             colorize: true,
+  //           },
+  //         }
+  //       : {
+  //           target: 'pino-roll',
+  //           options: {
+  //             file: path.join('log', 'log.txt'),
+  //             frequency: 'daily', //hourly
+  //             size: '100m',
+  //             mkdir: true,
+  //           },
+  //         },
+  // },
+  pinoHttp: {
+    transport: {
+      targets: [
+        {
+          level: 'info',
+          target: 'pino-pretty',
+          options: {
+            colorize: true,
+          },
+        },
+        {
+          level: 'info',
+          target: 'pino-roll',
+          options: {
+            file: join(process.cwd(), 'logs/log.txt'),
+            frequency: 'daily', //hourly
+            size: '100m',
+            mkdir: true,
+          },
+        },
+      ],
+    },
+  },
+};
 @Module({
   // forRoot 读取 .env 文件
   imports: [
-    LoggerModule.forRoot({
-      pinoHttp: {
-        transport:
-          process.env.NODE_ENV === 'development'
-            ? {
-                target: 'pino-pretty',
-                options: {
-                  colorize: true,
-                },
-              }
-            : {
-                target: 'pino-roll',
-                options: {
-                  file: path.join('log', 'log.txt'),
-                  frequency: 'daily', //hourly
-                  size: '100m',
-                  mkdir: true,
-                },
-              },
-      },
-    }),
+    LoggerModule.forRoot(logger),
     ConfigModule.forRoot({
       // 全局模块都能使用 不然只有app模块可以使用
       isGlobal: true,

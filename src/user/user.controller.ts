@@ -6,19 +6,21 @@ import {
   Patch,
   Param,
   Delete,
+  HttpException,
+  HttpStatus,
 } from '@nestjs/common';
 import { UserService } from './user.service';
 import { ConfigService } from '@nestjs/config';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
 import { User } from './entities/user.entity';
-import { Logger } from 'nestjs-pino'
+import { Logger } from 'nestjs-pino';
 @Controller('user')
 export class UserController {
   constructor(
     private readonly userService: UserService,
     private readonly configService: ConfigService,
-    private logger: Logger
+    private logger: Logger,
   ) {}
 
   @Post()
@@ -49,6 +51,10 @@ export class UserController {
 
   @Get('/find')
   findAll(): any {
+    const user = { isAdmin: false };
+    if (!user.isAdmin) {
+      throw new HttpException('Forbidden', HttpStatus.FORBIDDEN);
+    }
     return this.userService.findAll();
   }
 
