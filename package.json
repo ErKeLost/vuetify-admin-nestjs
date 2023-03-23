@@ -31,6 +31,9 @@
     "js-yaml": "^4.1.0",
     "lodash": "^4.17.21",
     "mysql2": "^3.2.0",
+    "nestjs-pino": "^3.1.2",
+    "pino-pretty": "^10.0.0",
+    "pino-roll": "1.0.0-rc.1",
     "reflect-metadata": "^0.1.13",
     "rxjs": "^7.2.0",
     "typeorm": "^0.3.12"

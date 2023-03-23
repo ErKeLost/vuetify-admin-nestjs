@@ -12,12 +12,13 @@ import { ConfigService } from '@nestjs/config';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
 import { User } from './entities/user.entity';
-
+import { Logger } from 'nestjs-pino'
 @Controller('user')
 export class UserController {
   constructor(
     private readonly userService: UserService,
     private readonly configService: ConfigService,
+    private logger: Logger
   ) {}
 
   @Post()
