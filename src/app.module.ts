@@ -112,7 +112,7 @@ const logger = {
           // 同步本地schema与数据库 -> 每次初始化的时候同步
           synchronize: configService.get(ConfigEnum.DB_SYNCHRONIZE),
           // logging: ['error'],
-          logging: process.env.NODE_ENV === 'development' ? ['error'] : true,
+          // logging: process.env.NODE_ENV === 'development' ? ['error'] : true,
         } as TypeOrmModuleOptions;
         return typeOrmConfig;
       },
