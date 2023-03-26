@@ -7,7 +7,7 @@ import { TypeOrmModule, TypeOrmModuleOptions } from '@nestjs/typeorm';
 import * as joi from 'joi';
 import { LoggerModule } from 'nestjs-pino';
 import { join } from 'path';
-import ormConfig from 'orm.config';
+import { connectOptions } from '../orm.config';
 
 // env 模式
 // const envFilePath = `.env.${process.env.NODE_ENV || 'development'}`;
@@ -80,7 +80,7 @@ const logger = {
         DB_SYNCHRONIZE: joi.boolean().default(false),
       }),
     }),
-    TypeOrmModule.forRoot(ormConfig),
+    TypeOrmModule.forRoot(connectOptions),
     UserModule,
   ],
   controllers: [],

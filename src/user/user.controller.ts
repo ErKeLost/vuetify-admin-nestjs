@@ -51,10 +51,10 @@ export class UserController {
 
   @Get('/find')
   findAll(): any {
-    const user = { isAdmin: false };
-    if (!user.isAdmin) {
-      throw new HttpException('Forbidden', HttpStatus.FORBIDDEN);
-    }
+    // const user = { isAdmin: false };
+    // if (!user.isAdmin) {
+    //   throw new HttpException('Forbidden', HttpStatus.FORBIDDEN);
+    // }
     return this.userService.findAll();
   }
 

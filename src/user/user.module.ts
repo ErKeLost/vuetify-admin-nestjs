@@ -1,11 +1,9 @@
-import { Logs } from 'src/logs/entities/logs.entity';
+import { Logs } from '../logs/entities/logs.entity';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { Module } from '@nestjs/common';
-import { LoggerModule } from 'nestjs-pino';
 import { UserService } from './user.service';
 import { UserController } from './user.controller';
 import { User } from './entities/user.entity';
-import path from 'path';
 
 @Module({
   imports: [

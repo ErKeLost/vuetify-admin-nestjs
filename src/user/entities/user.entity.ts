@@ -1,6 +1,6 @@
 import { Profile } from './profile.entity';
-import { Logs } from 'src/logs/entities/logs.entity';
-import { Roles } from 'src/roles/entities/roles.entity';
+import { Logs } from '../../logs/entities/logs.entity';
+import { Roles } from '../../roles/entities/roles.entity';
 import {
   Column,
   Entity,

@@ -1,4 +1,4 @@
-import { Logs } from 'src/logs/entities/logs.entity';
+import { Logs } from '../logs/entities/logs.entity';
 import { Profile } from './entities/profile.entity';
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
