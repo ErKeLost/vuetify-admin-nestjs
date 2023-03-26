@@ -24,6 +24,6 @@ const connectOptions = {
 export { connectOptions };
 export default new DataSource({
   ...connectOptions,
-  migrations: 'src/migrations/**',
+  migrations: ['src/migrations/**'],
   subscribers: [],
-} as unknown as DataSourceOptions);
+} as DataSourceOptions);
