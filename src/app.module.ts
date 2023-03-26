@@ -1,8 +1,3 @@
-import { Roles } from './roles/entities/roles.entity';
-import { Profile } from './user/entities/profile.entity';
-import { Logs } from './logs/entities/logs.entity';
-import { User } from './user/entities/user.entity';
-import { ConfigEnum } from './enum/config.enum';
 import { Module } from '@nestjs/common';
 import { UserModule } from './user/user.module';
 import { ConfigModule, ConfigService } from '@nestjs/config';
@@ -12,6 +7,7 @@ import { TypeOrmModule, TypeOrmModuleOptions } from '@nestjs/typeorm';
 import * as joi from 'joi';
 import { LoggerModule } from 'nestjs-pino';
 import { join } from 'path';
+import ormConfig from 'orm.config';
 
 // env 模式
 // const envFilePath = `.env.${process.env.NODE_ENV || 'development'}`;
@@ -84,39 +80,7 @@ const logger = {
         DB_SYNCHRONIZE: joi.boolean().default(false),
       }),
     }),
-    // TypeOrmModule.forRoot({
-    //   type: 'mysql',
-    //   host: 'localhost',
-    //   port: 3080,
-    //   username: 'root',
-    //   password: 'example',
-    //   database: 'testdb',
-    //   entities: [],
-    //   // 同步本地schema与数据库 -> 每次初始化的时候同步
-    //   synchronize: true,
-    //   logging: ['error', 'warn', 'info', 'log'],
-    // }),
-    // 不能写死 要读取环境变量
-    TypeOrmModule.forRootAsync({
-      imports: [ConfigModule],
-      inject: [ConfigService],
-      useFactory: (configService: ConfigService) => {
-        const typeOrmConfig: TypeOrmModuleOptions = {
-          type: configService.get(ConfigEnum.DB),
-          host: configService.get(ConfigEnum.DB_HOST),
-          port: configService.get(ConfigEnum.DB_PORT),
-          username: configService.get(ConfigEnum.DB_USERNAME),
-          password: configService.get(ConfigEnum.DB_PASSWORD),
-          database: configService.get(ConfigEnum.DB_DATABASE),
-          entities: [User, Logs, Profile, Roles],
-          // 同步本地schema与数据库 -> 每次初始化的时候同步
-          synchronize: configService.get(ConfigEnum.DB_SYNCHRONIZE),
-          // logging: ['error'],
-          // logging: process.env.NODE_ENV === 'development' ? ['error'] : true,
-        } as TypeOrmModuleOptions;
-        return typeOrmConfig;
-      },
-    }),
+    TypeOrmModule.forRoot(ormConfig),
     UserModule,
   ],
   controllers: [],
