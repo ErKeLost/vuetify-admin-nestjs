@@ -3,35 +3,13 @@ import { UserModule } from './user/user.module';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import * as dotenv from 'dotenv';
 import { TypeOrmModule, TypeOrmModuleOptions } from '@nestjs/typeorm';
-// import configuration from './configuration';
 import * as joi from 'joi';
 import { LoggerModule } from 'nestjs-pino';
 import { join } from 'path';
 import { connectOptions } from '../orm.config';
 
 // env 模式
-// const envFilePath = `.env.${process.env.NODE_ENV || 'development'}`;
-// console.log(configuration);
 const logger = {
-  // pinoHttp: {
-  //   transport:
-  //     process.env.NODE_ENV === 'development'
-  //       ? {
-  //           target: 'pino-pretty',
-  //           options: {
-  //             colorize: true,
-  //           },
-  //         }
-  //       : {
-  //           target: 'pino-roll',
-  //           options: {
-  //             file: path.join('log', 'log.txt'),
-  //             frequency: 'daily', //hourly
-  //             size: '100m',
-  //             mkdir: true,
-  //           },
-  //         },
-  // },
   pinoHttp: {
     transport: {
       targets: [
@@ -71,13 +49,18 @@ const logger = {
       // 环境变量使用枚举的方式来进行填充
       validationSchema: joi.object({
         DB_PORT: joi.number().default(3306),
-        // DB_HOST: joi.string().ip(),
+        DB_HOST: joi.alternatives().try(
+          // 可选项
+          joi.string().ip(),
+        ),
         NODE_ENV: joi.string().valid('development', 'production'),
         DB: joi.string().valid('mysql', 'postgres'),
         DB_DATABASE: joi.string().required(),
         DB_USERNAME: joi.string().required(),
         DB_PASSWORD: joi.string().required(),
         DB_SYNCHRONIZE: joi.boolean().default(false),
+        LOG_ON: joi.boolean().default(true),
+        LOG_LEVEL: joi.string().default('info'),
       }),
     }),
     TypeOrmModule.forRoot(connectOptions),
