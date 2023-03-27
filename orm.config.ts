@@ -25,9 +25,12 @@ function buildConnectOptions() {
   const config = { ...defaultEnv, ...envConfig };
 
   const entitiesDir =
-    process.env.NODE_ENV === 'test'
-      ? [__dirname + '/src/**/*.entity.ts']
-      : [__dirname + '/src/**/*.entity{.ts,.js}'];
+    process.env.NODE_ENV === 'development'
+      ? [__dirname + '/**/*.entity.ts']
+      : [__dirname + '/**/*.entity{.ts,.js}'];
+
+  console.log(entitiesDir);
+
   return {
     type: config[ConfigEnum.DB],
     host: config[ConfigEnum.DB_HOST],
@@ -36,6 +39,7 @@ function buildConnectOptions() {
     password: config[ConfigEnum.DB_PASSWORD],
     database: config[ConfigEnum.DB_DATABASE],
     entities: entitiesDir,
+    // entities: [User, Logs, Profile, Roles],
     // 同步本地schema与数据库 -> 每次初始化的时候同步
     synchronize: config[ConfigEnum.DB_SYNCHRONIZE],
     // logging: ['error'],

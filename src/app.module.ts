@@ -52,6 +52,8 @@ const logger = {
         DB_HOST: joi.alternatives().try(
           // 可选项
           joi.string().ip(),
+          joi.string().domain(),
+          joi.string(),
         ),
         NODE_ENV: joi.string().valid('development', 'production'),
         DB: joi.string().valid('mysql', 'postgres'),
