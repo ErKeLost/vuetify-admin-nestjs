@@ -2,6 +2,9 @@
 /dist
 /node_modules
 /logs
+
+logs/*
+# dependencies
 # Logs
 *.log
 npm-debug.log*
