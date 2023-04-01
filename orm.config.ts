@@ -28,6 +28,7 @@ function buildConnectOptions() {
     process.env.NODE_ENV === 'development'
       ? [__dirname + '/**/*.entity.ts']
       : [__dirname + '/**/*.entity{.ts,.js}'];
+  console.log(entitiesDir);
 
   return {
     type: config[ConfigEnum.DB],
