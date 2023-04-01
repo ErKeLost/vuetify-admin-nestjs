@@ -15,6 +15,7 @@ import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
 import { User } from './entities/user.entity';
 import { Logger } from 'nestjs-pino';
+import { BusinessException } from 'src/common/exception/business.exception';
 @Controller('user')
 export class UserController {
   constructor(
@@ -55,6 +56,7 @@ export class UserController {
     // if (!user.isAdmin) {
     //   throw new HttpException('Forbidden', HttpStatus.FORBIDDEN);
     // }
+    throw new BusinessException('你这个参数错了');
     return this.userService.findAll();
   }
 
@@ -71,5 +73,10 @@ export class UserController {
   @Delete(':id')
   remove(@Param('id') id: number) {
     return this.userService.remove(id);
+  }
+
+  @Get('/configAccess')
+  findBusinessError() {
+    throw new BusinessException('你这个参数错了');
   }
 }

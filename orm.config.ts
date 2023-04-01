@@ -29,8 +29,6 @@ function buildConnectOptions() {
       ? [__dirname + '/**/*.entity.ts']
       : [__dirname + '/**/*.entity{.ts,.js}'];
 
-  console.log(entitiesDir);
-
   return {
     type: config[ConfigEnum.DB],
     host: config[ConfigEnum.DB_HOST],
@@ -38,8 +36,8 @@ function buildConnectOptions() {
     username: config[ConfigEnum.DB_USERNAME],
     password: config[ConfigEnum.DB_PASSWORD],
     database: config[ConfigEnum.DB_DATABASE],
-    entities: entitiesDir,
-    // entities: [User, Logs, Profile, Roles],
+    // entities: entitiesDir,
+    entities: [User, Logs, Profile, Roles],
     // 同步本地schema与数据库 -> 每次初始化的时候同步
     synchronize: config[ConfigEnum.DB_SYNCHRONIZE],
     // logging: ['error'],
@@ -48,7 +46,6 @@ function buildConnectOptions() {
   } as TypeOrmModuleOptions;
 }
 const connectOptions = buildConnectOptions();
-console.log(connectOptions);
 
 export { connectOptions };
 export default new DataSource({
