@@ -13,13 +13,13 @@ const logger = {
   pinoHttp: {
     transport: {
       targets: [
-        {
-          level: 'info',
-          target: 'pino-pretty',
-          options: {
-            colorize: true,
-          },
-        },
+        // {
+        //   level: 'info',
+        //   target: 'pino-pretty',
+        //   options: {
+        //     colorize: true,
+        //   },
+        // },
         {
           level: 'info',
           target: 'pino-roll',

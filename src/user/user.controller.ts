@@ -8,6 +8,8 @@ import {
   Delete,
   HttpException,
   HttpStatus,
+  Req,
+  Query,
 } from '@nestjs/common';
 import { UserService } from './user.service';
 import { ConfigService } from '@nestjs/config';
@@ -16,6 +18,16 @@ import { UpdateUserDto } from './dto/update-user.dto';
 import { User } from './entities/user.entity';
 import { Logger } from 'nestjs-pino';
 import { BusinessException } from 'src/common/exception/business.exception';
+
+interface IUserQuery {
+  pageSize: number;
+  startRow: number;
+  limit?: number;
+  username?: string;
+  role?: number;
+  gender?: number;
+}
+
 @Controller('user')
 export class UserController {
   constructor(
@@ -25,9 +37,10 @@ export class UserController {
   ) {}
 
   @Post()
-  create(@Body() user: User) {
+  create(@Body() user: User): any {
+    console.log(user);
     const userTmp = { username: 'erkelost', password: '1256029807' } as User;
-    return this.userService.create(userTmp);
+    return this.userService.create(user);
   }
 
   @Get('/profile')
@@ -51,16 +64,12 @@ export class UserController {
   }
 
   @Get('/find')
-  findAll(): any {
-    // const user = { isAdmin: false };
-    // if (!user.isAdmin) {
-    //   throw new HttpException('Forbidden', HttpStatus.FORBIDDEN);
-    // }
-    throw new BusinessException('你这个参数错了');
-    return this.userService.findAll();
+  findAll(@Query() query: IUserQuery): any {
+    // 前端传递的query 参数全部都是 string
+    return this.userService.findAll(query);
   }
 
-  @Get(':id')
+  @Get('/:id')
   findOne(@Param('id') id: string) {
     return this.userService.find(id);
   }

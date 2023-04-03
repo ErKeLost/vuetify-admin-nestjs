@@ -3,7 +3,7 @@ import { Profile } from './entities/profile.entity';
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
-import { CreateUserDto } from './dto/create-user.dto';
+import { CreateUserDto, IUserQuery } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
 import { User } from './entities/user.entity';
 
@@ -17,9 +17,39 @@ export class UserService {
     const userTmp = await this.userRepository.create(user);
     return this.userRepository.save(userTmp);
   }
-  async findAll() {
-    const res = await this.userRepository.find();
-    return res;
+  async findAll(query: IUserQuery) {
+    // 联合查询
+    // SELECT * FROM user u, profile p, role r WHERE u.id = p.userId AND u.roleId = r.id
+
+    // 第二种联合查询
+    // SELECT * FROM user u LEFT JOIN profile p ON u.id = p.userId LEFT JOIN role r ON u.roleId = r.id
+    const { startRow, pageSize, username, gender, role } = query;
+    const take = startRow || 10;
+    const skip = ((pageSize || 1) - 1) * startRow || 0;
+    return this.userRepository.find({
+      relations: {
+        profile: true,
+        roles: true,
+      },
+      select: {
+        id: true,
+        username: true,
+        profile: {
+          gender: true,
+        },
+      },
+      where: {
+        username,
+        profile: {
+          gender,
+        },
+        roles: {
+          id: role,
+        },
+      },
+      take,
+      skip,
+    });
   }
 
   find(username: string) {
