@@ -1,11 +1,12 @@
 import { Logs } from '../logs/entities/logs.entity';
 import { Profile } from './entities/profile.entity';
-import { Injectable } from '@nestjs/common';
+import { HttpException, Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { CreateUserDto, IUserQuery } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
 import { User } from './entities/user.entity';
+import { conditionUtils } from 'src/utils/db.helper';
 
 @Injectable()
 export class UserService {
@@ -15,7 +16,17 @@ export class UserService {
   ) {}
   async create(user: User) {
     const userTmp = await this.userRepository.create(user);
-    return this.userRepository.save(userTmp);
+    // try {
+    //   const res = await this.userRepository.save(userTmp);
+    //   return res;
+    // } catch (err) {
+    //   console.log(err);
+    //   if (err?.errno === 1062) {
+    //     throw new HttpException(err.sqlMessage, 500);
+    //   }
+    // }
+    const res = await this.userRepository.save(userTmp);
+    return res;
   }
   async findAll(query: IUserQuery) {
     // 联合查询
@@ -26,30 +37,42 @@ export class UserService {
     const { startRow, pageSize, username, gender, role } = query;
     const take = startRow || 10;
     const skip = ((pageSize || 1) - 1) * startRow || 0;
-    return this.userRepository.find({
-      relations: {
-        profile: true,
-        roles: true,
-      },
-      select: {
-        id: true,
-        username: true,
-        profile: {
-          gender: true,
-        },
-      },
-      where: {
-        username,
-        profile: {
-          gender,
-        },
-        roles: {
-          id: role,
-        },
-      },
-      take,
-      skip,
-    });
+    // return this.userRepository.find({
+    //   relations: {
+    //     profile: true,
+    //     roles: true,
+    //   },
+    //   select: {
+    //     id: true,
+    //     username: true,
+    //     profile: {
+    //       gender: true,
+    //     },
+    //   },
+    //   where: {
+    //     username,
+    //     profile: {
+    //       gender,
+    //     },
+    //     roles: {
+    //       id: role,
+    //     },
+    //   },
+    //   take,
+    //   skip,
+    // });
+    const obj = {
+      'user.username': username,
+      'profile.gender': gender,
+      'role.id': role,
+    };
+    const queryBuild = this.userRepository
+      .createQueryBuilder('user')
+      // inner join 和 left join 和 out join 和 right join的区别
+      .leftJoinAndSelect('user.profile', 'profile')
+      .leftJoinAndSelect('user.roles', 'roles');
+    const newQuery = conditionUtils<User>(queryBuild, obj);
+    return newQuery.take(take).skip(skip).getMany();
   }
 
   find(username: string) {
