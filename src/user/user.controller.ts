@@ -76,11 +76,15 @@ export class UserController {
 
   @Patch(':id')
   update(@Param('id') id: number, @Body() user: User) {
+    // 判断是否是自己
+    // 判断是否有权限更新user
+    // 返回数据不能包含敏感数据
     return this.userService.update(id, user);
   }
 
-  @Delete(':id')
+  @Delete('/:id')
   remove(@Param('id') id: number) {
+    console.log(id);
     return this.userService.remove(id);
   }
 
