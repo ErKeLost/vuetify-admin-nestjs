@@ -26,6 +26,7 @@ export class UserService {
     //   }
     // }
     const res = await this.userRepository.save(userTmp);
+    console.log(res);
     return res;
   }
   async findAll(query: IUserQuery) {
